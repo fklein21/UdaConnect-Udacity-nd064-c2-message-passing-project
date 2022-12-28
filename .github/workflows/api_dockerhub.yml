@@ -42,4 +42,4 @@ jobs:
           file: ./modules/api/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/techtrends:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nd064-udaconnect-api:latest

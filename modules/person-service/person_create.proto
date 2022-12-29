@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message PersonCreateMessage {
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string company_name = 4;
+}
+
+service PersonCreateService {
+    rpc Create(PersonCreateMessage) returns (PersonCreateMessage);
+}

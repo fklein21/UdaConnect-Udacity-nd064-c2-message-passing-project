@@ -35,4 +35,3 @@ class PersonResource(Resource):
         print("Request (post) to persons/<person_id> route")
         person: Person = PersonService.retrieve(person_id)
         return person
-

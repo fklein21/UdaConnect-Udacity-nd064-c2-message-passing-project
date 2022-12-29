@@ -42,4 +42,4 @@ jobs:
           file: ./modules/location-ingestion-service/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nd064-udaconnect-location-ingestion:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nd064-udaconnect-location-ingestion-service:latest

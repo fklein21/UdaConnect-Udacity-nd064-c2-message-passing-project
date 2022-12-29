@@ -18,8 +18,8 @@ class LocationServicer(location_pb2_grpc.LocationServiceServicer):
         logger.info("Received message")
         request_value = {
             "person_id": request.person_id,
-            "longitude": request.longitude,
             "latitude": request.latitude,
+            "longitude": request.longitude,
         }
         logger.info(str(request_value))
         producer.send(KAFKA_TOPIC, request_value)

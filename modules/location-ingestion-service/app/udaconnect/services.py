@@ -24,6 +24,7 @@ class LocationServicer(location_pb2_grpc.LocationServiceServicer):
         logger.info(str(request_value))
         producer.send(KAFKA_TOPIC, request_value)
         producer.flush()
+        logger.info("Send message to Kafka")
         return location_pb2.LocationMessage(**request_value)
 
 

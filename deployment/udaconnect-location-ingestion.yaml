@@ -31,7 +31,7 @@ spec:
         service: location-ingestion-service
     spec:
       containers:
-      - image: udacity/nd064-udaconnect-location-ingestion:latest
+      - image: fklein21/nd064-udaconnect-location-ingestion-service:latest
         name: location-ingestion-service
         imagePullPolicy: Always
         resources:

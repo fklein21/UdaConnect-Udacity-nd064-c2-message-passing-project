@@ -38,8 +38,8 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./modules/location-ingestion-service/.
-          file: ./modules/location-ingestion-service/Dockerfile
+          context: ./modules/connection-service/.
+          file: ./modules/connection-service/Dockerfile
           platforms: linux/amd64
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/nd064-udaconnect-connection-service:latest

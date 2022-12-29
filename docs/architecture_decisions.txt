@@ -1,0 +1,12 @@
+Three message passing strategies have been used:
+
+- For the API's handling the connection and persons request, a REST endpoint have been chosen. 
+  REST API's are more common, and since this is exposed to the end users (potentially 3rd party users), REST has been chosen for a more 
+  convenient experience for other web developers.
+
+- For the location API, a gRPC endpoint is used. Since this handles a lot of traffic from the users' mobile devices, 
+  gRPC is a good option due to its efficiency. The location endpoint is also only used by the mobile apps,
+  the range of developers who would use this API is smaller.
+
+- Since the location endpoint likely handles a lot of traffic a Kafka queue is used to take some
+  stress from the database when the traffic spikes.

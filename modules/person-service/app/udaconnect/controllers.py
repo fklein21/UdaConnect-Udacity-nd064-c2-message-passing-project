@@ -15,12 +15,14 @@ class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
     @responds(schema=PersonSchema)
     def post(self) -> Person:
+        print("Request (post) to persons route")
         payload = request.get_json()
         new_person: Person = PersonService.create(payload)
         return new_person
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
+        print("Request (get) to persons route")
         persons: List[Person] = PersonService.retrieve_all()
         return persons
 
@@ -30,6 +32,7 @@ class PersonsResource(Resource):
 class PersonResource(Resource):
     @responds(schema=PersonSchema)
     def get(self, person_id) -> Person:
+        print("Request (post) to persons/<person_id> route")
         person: Person = PersonService.retrieve(person_id)
         return person
 

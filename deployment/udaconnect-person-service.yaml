@@ -31,7 +31,7 @@ spec:
         service: person-service
     spec:
       containers:
-      - image: fklein21/nd064-udaconnect-person-service
+      - image: fklein21/nd064-udaconnect-person-service:latest
         name: person-service
         imagePullPolicy: Always
         env:

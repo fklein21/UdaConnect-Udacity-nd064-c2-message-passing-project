@@ -14,7 +14,7 @@ from kafka import KafkaProducer
 
 class LocationServicer(location_pb2_grpc.LocationServiceServicer):
 
-    def Create(self, request, context, logger):
+    def Create(self, request, context):
         logger.info("Received message")
         request_value = {
             "person_id": request.person_id,

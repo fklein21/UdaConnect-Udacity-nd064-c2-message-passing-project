@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: UdaConnect - Location Ingestion Service - Package to Dockerhub
+name: UdaConnect - Person Service - Package to Dockerhub
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -38,8 +38,8 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./modules/location-ingestion-service/.
-          file: ./modules/location-ingestion-service/Dockerfile
+          context: ./modules/person-service/.
+          file: ./modules/person-service/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nd064-udaconnect-location-ingestion-service:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nd064-udaconnect-person-service:latest

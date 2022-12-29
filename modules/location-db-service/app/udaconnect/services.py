@@ -25,7 +25,7 @@ def write_to_db(new_location: Dict):
     cursor = session.cursor()
     cursor.execute("""
             INSERT INTO location (person_id, coordinate)
-            VALUES ({}, ST_Point({}, {}));'
+            VALUES ({}, ST_Point({}, {}));
     """.format(int(new_location['person_id']), float(new_location["latitude"]), float(new_location['longitude']))
     )
     session.commit()

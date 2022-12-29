@@ -17,29 +17,22 @@ DB_PORT = os.environ["DB_PORT"]
 DB_NAME = os.environ["DB_NAME"]
 
 
-def write_to_db(location: Dict):
-    logger.info(f"Write to location database: {str(locatin)}")
+def write_to_db(new_location: Dict):
+    logger.info(f"Write to location database: {str(new_location)}")
 
     session = psycopg2.connect(dbname=DB_NAME, port=DB_PORT, user=DB_USERNAME, password=DB_PASSWORD, host=DB_HOST)
     cursor = session.cursor()
     cursor.execute("""
             INSERT INTO location (person_id, coordinate)
             VALUES ({}, ST_Point({}, {}));'
-    """.format(int(location['person_id']), float(location["latitude"]), float(location['longitude']))
-
+    """.format(int(new_location['person_id']), float(new_location["latitude"]), float(new_location['longitude']))
     )
+    session.commit()
+    cursor.close()
+    session.close()
 
-    new_location = Location()
-    new_location.person_id = location["person_id"]
-    new_location.creation_time = location["creation_time"]
-    new_location.coordinate = ST_Point(location["latitude"], location["longitude"])
-    db.session.add(new_location)
-    db.session.commit()
-
+    logger.info(f"Location successfully saved")
     return new_location
-
-def write_to_db(location):
-    pass
 
 
 
@@ -51,9 +44,13 @@ logger = logging.getLogger("udaconnect-location-ingestion-service")
 KAFKA_SERVER = 'my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092'
 KAFKA_TOPIC = "location"
 serializer = lambda x: json.dumps(x).encode('utf-8')
-producer = KafkaConsumer(KAFKA_TOPIC,
+consumer = KafkaConsumer(KAFKA_TOPIC,
                          bootstrap_servers=KAFKA_SERVER,)
 
+
+for message in consumer:
+    location = json.loads(message.value.decode('utf-8'))
+    write_to_db(location)
 
 
 

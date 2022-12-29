@@ -1,29 +1,37 @@
 import logging
 from typing import Dict, List
+
 from app import db
 from app.udaconnect.models import Person
 
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("udaconnect-api")
 
 
 class PersonService:
     @staticmethod
     def create(person: Dict) -> Person:
+        logger.info(f"Creating new person: {str(person)}")
         new_person = Person()
         new_person.first_name = person["first_name"]
         new_person.last_name = person["last_name"]
         new_person.company_name = person["company_name"]
+
         db.session.add(new_person)
         db.session.commit()
-
+        logger.info("Finished creating person")
         return new_person
 
     @staticmethod
     def retrieve(person_id: int) -> Person:
+        logger.info(f"Retrieving person with id {person_id}")
         person = db.session.query(Person).get(person_id)
+        logger.debug(f"Retrieved person: {str(person)}")
         return person
 
     @staticmethod
     def retrieve_all() -> List[Person]:
-        return db.session.query(Person).all()
+        logger.info(f"Retrieving all persons")
+        persons = db.session.query(Person).all()
+        logger.debug(f"All persons from db: {str(persons)}")
+        return persons

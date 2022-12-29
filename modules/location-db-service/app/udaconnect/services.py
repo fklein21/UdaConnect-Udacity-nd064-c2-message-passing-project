@@ -38,6 +38,7 @@ def _add_to_location(location: Dict):
     return location
 
 
+
 def consume_message():
     for message in messages:
         location = json.loads(message.value.decode("utf-8"))

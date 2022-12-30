@@ -1,0 +1,114 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: person-api
+  description: The API for retrieving from and storing in the persons database of the UdaConnect app.
+paths:
+  /persons:
+    get:
+      tags:
+        - Person
+      description: Retrieves all persons in the database
+      operationId: retrieve_all_person
+      responses:
+        '200':
+          description: All persons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+        '400':
+          description: Bad input parameter
+    post:
+      tags:
+        - Person
+      operationId: create_person
+      responses:
+        '201':
+          description: Creates a person in the database with the specified data
+        '400':
+          description: Bad input parameter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+  '/persons/{person_id}':
+    post:
+      tags:
+        - Person
+      operationId: create_person
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '400':
+          description: Bad input parameter
+  '/persons/{person_id}/connection':
+    post:
+      tags:
+        - Connection
+      operationId: find_contact
+      parameters:
+        - name: person_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connection'
+        '400':
+          description: Bad input parameter
+components:
+  schemas:
+    Person:
+      type: object
+      required:
+        - person_id
+        - first_name
+        - last_name
+        - company_name
+      properties:
+        person_id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        company_name:
+          type: string
+    Connection:
+      type: object
+      required:
+        - person_id
+        - start_date
+        - end_date
+        - distance
+      properties:
+        person_id:
+          type: integer
+        first_name:
+          type: string
+        last_name:
+          type: string
+        company_name:
+          type: integer
+servers:
+  - description: deployment in local kubernetes cluster
+    url: localhost:30010/api/

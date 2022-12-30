@@ -1,4 +1,6 @@
 # UdaConnect
+
+![](images/UdaConnect-startpage.png)
 ## Overview
 ### Background
 Conferences and conventions are hotspots for making connections. Professionals in attendance often share the same interests and can make valuable business and personal connections with one another. At the same time, these events draw a large crowd and it's often hard to make these connections in the midst of all of these events' excitement and energy. To help attendees make connections, we are building the infrastructure for a service that can inform attendees if they have attended the same booths and presentations at an event.
@@ -9,6 +11,9 @@ You work for a company that is building a app that uses location data from mobil
 Management loved the POC so now that there is buy-in, we want to enhance this application. You have been tasked to enhance the POC application into a [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product) to handle the large volume of location data that will be ingested.
 
 To do so, ***you will refactor this application into a microservice architecture using message passing techniques that you have learned in this course***. It’s easy to get lost in the countless optimizations and changes that can be made: your priority should be to approach the task as an architect and refactor the application into microservices. File organization, code linting -- these are important but don’t affect the core functionality and can possibly be tagged as TODO’s for now!
+
+### Architecture of the app
+![](docs/architecture.png)
 
 ### Technologies
 * [Flask](https://flask.palletsprojects.com/en/1.1.x/) - API webserver
@@ -80,12 +85,25 @@ Afterwards, you can test that `kubectl` works by running a command like `kubectl
 2. `kubectl apply -f deployment/db-secret.yaml` - Set up secrets for the pods
 3. `kubectl apply -f deployment/postgres.yaml` - Set up a Postgres database running PostGIS
 4. `kubectl apply -f deployment/udaconnect-api.yaml` - Set up the service and deployment for the API
-5. `kubectl apply -f deployment/udaconnect-app.yaml` - Set up the service and deployment for the web app
-6. `sh scripts/run_db_command.sh <POD_NAME>` - Seed your database against the `postgres` pod. (`kubectl get pods` will give you the `POD_NAME`)
+5. `kubectl apply -f deployment/udaconnect-connection-service.yaml` - Set up the service and deployment for the connection service that matches peoples locations.
+6. `kubectl apply -f deployment/udaconnect-location-db-service.yaml` - Set up the service and deployment for the service that write user's locations into the database.
+7. `kubectl apply -f deployment/udaconnect-location-ingestion.yaml` - Set up the service and deployment for the service that ingests user's location via a gRPC endpoint.
+8. `kubectl apply -f deployment/udaconnect-person-service.yaml` - Set up the service and deployment for the service that creates and retrieves users from the database.
+9. `kubectl apply -f deployment/udaconnect-app.yaml` - Set up the service and deployment for the web app
+10. `sh scripts/run_db_command.sh <POD_NAME>` - Seed your database against the `postgres` pod. (`kubectl get pods` will give you the `POD_NAME`)
+11. `kubectl apply -f deployment/kafka.yaml` - Set up the namespace for Kafka and deploy the Strimzi files.
+12. `kubectl apply -f https://strimzi.io/examples/latest/kafka/kafka-persistent-single.yaml -n kafka` - Deploy the Kafka cluster.
+
+
+
+
+
 
 Manually applying each of the individual `yaml` files is cumbersome but going through each step provides some context on the content of the starter project. In practice, we would have reduced the number of steps by running the command against a directory to apply of the contents: `kubectl apply -f deployment/`.
 
 Note: The first time you run this project, you will need to seed the database with dummy data. Use the command `sh scripts/run_db_command.sh <POD_NAME>` against the `postgres` pod. (`kubectl get pods` will give you the `POD_NAME`). Subsequent runs of `kubectl apply` for making changes to deployments or services shouldn't require you to seed the database again!
+
+
 
 ### Verifying it Works
 Once the project is up and running, you should be able to see 3 deployments and 3 services in Kubernetes:

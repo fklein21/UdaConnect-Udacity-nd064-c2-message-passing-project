@@ -60,4 +60,9 @@ spec:
             configMapKeyRef:
               name: db-env
               key: DB_PORT
+        - name: PERSON_SERVICE_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: person-service-env
+              key: PERSON_SERVICE_ENDPOINT
       restartPolicy: Always

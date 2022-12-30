@@ -1,15 +1,18 @@
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List
+import requests
 
 from app import db
 from app.udaconnect.models import Connection, Location, Person
-from app.udaconnect.schemas import ConnectionSchema, LocationSchema, PersonSchema
+from app.udaconnect.schemas import LocationSchema
 from geoalchemy2.functions import ST_AsText, ST_Point
 from sqlalchemy.sql import text
+from app.config import PERSON_SERVICE_ENDPOINT
 
 logging.basicConfig(level=logging.WARNING)
-logger = logging.getLogger("udaconnect-api")
+logger = logging.getLogger("udaconnect-person-service-api")
+
 
 
 class ConnectionService:
@@ -112,23 +115,21 @@ class LocationService:
 
 
 class PersonService:
-    @staticmethod
-    def create(person: Dict) -> Person:
-        new_person = Person()
-        new_person.first_name = person["first_name"]
-        new_person.last_name = person["last_name"]
-        new_person.company_name = person["company_name"]
 
-        db.session.add(new_person)
-        db.session.commit()
-
-        return new_person
-
-    @staticmethod
-    def retrieve(person_id: int) -> Person:
-        person = db.session.query(Person).get(person_id)
-        return person
-
+    # get person data using REST API call to person micro service
     @staticmethod
     def retrieve_all() -> List[Person]:
-        return db.session.query(Person).all()
+        persons = requests.get(PERSON_SERVICE_ENDPOINT + "api/persons")
+        persons = persons.json()
+
+        data = []
+        for each in persons:
+            pp = Person()
+            pp.id = each["id"]
+            pp.first_name = each["first_name"]
+            pp.last_name = each["last_name"]
+            pp.company_name = each["company_name"]
+            data.append(pp)
+
+        return data
+        

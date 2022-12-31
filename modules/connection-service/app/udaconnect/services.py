@@ -15,6 +15,7 @@ logger = logging.getLogger("udaconnect-person-service-api")
 
 
 
+# Find the connections of one person
 class ConnectionService:
     @staticmethod
     def find_contacts(person_id: int, start_date: datetime, end_date: datetime, meters=5
@@ -85,6 +86,8 @@ class ConnectionService:
 
 
 class LocationService:
+
+    # Get Location data
     @staticmethod
     def retrieve(location_id) -> Location:
         location, coord_text = (
@@ -116,7 +119,7 @@ class LocationService:
 
 class PersonService:
 
-    # get person data using REST API call to person micro service
+    # Get person data using REST API call to person micro service
     @staticmethod
     def retrieve_all() -> List[Person]:
         persons = requests.get(PERSON_SERVICE_ENDPOINT + "api/persons")

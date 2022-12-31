@@ -5,6 +5,7 @@ import location_pb2_grpc
 
 """
 Sample implementation of a writer that can be used to write messages to gRPC.
+Used for debugging the gRPC location ingestion endpoint.
 """
 
 print("Sending sample payload...")

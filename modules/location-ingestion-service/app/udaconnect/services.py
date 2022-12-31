@@ -12,6 +12,8 @@ from kafka import KafkaProducer
 # https://b-nova.com/home/content/heres-how-you-can-setup-kafka-with-strimzi-on-kubernetes-in-only-five-minutes
 
 
+# Handles an incoming gRPC message:
+# Produces a Kafka message with the incoming gRPC payload and answers the sender of the gRPC message
 class LocationServicer(location_pb2_grpc.LocationServiceServicer):
 
     def Create(self, request, context):
@@ -32,7 +34,7 @@ format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"  # (1)
 logging.basicConfig(format=format, level=logging.INFO)
 logger = logging.getLogger("udaconnect-location-ingestion-service")
 
-# # Set up a Kafka producer
+# Set up a Kafka producer
 KAFKA_SERVER = 'my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092'
 KAFKA_TOPIC = "location"
 serializer = lambda x: json.dumps(x).encode('utf-8')

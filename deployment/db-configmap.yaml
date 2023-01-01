@@ -7,3 +7,13 @@ data:
   DB_PORT: "5432"
 metadata:
   name: db-env
+---
+apiVersion: v1
+kind: ConfigMap
+data:
+  DB_USERNAME: "ct_admin"
+  DB_NAME: "personsdatabase"
+  DB_HOST: "postgres-persons"
+  DB_PORT: "5432"
+metadata:
+  name: db-persons-env
